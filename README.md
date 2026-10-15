@@ -62,9 +62,11 @@ AI Infra Doctor 是一个面向 AI 基础设施运维场景的开源原型项目
 
 ## 3. 项目截图
 
-[AI Infra Doctor Dashboard](docs/dashboard.png)
+![AI Infra Doctor Dashboard](docs/dashboard.png)
 
-截图应反映当前真实运行效果。工作负载中的模拟指标应与真实主机采集指标明确区分。
+上图为项目在本机真实运行时的 Dashboard 全页截图（启动服务后访问 `/dashboard`）。
+
+截图应反映当前真实运行效果。工作负载中的模拟指标应与真实主机采集指标明确区分：图中「系统资源」五张卡片（CPU / 内存 / 磁盘 / 网络发送 / 网络接收）来自本机 `psutil` 真实采集，而「AI 工作负载」四项（Request Count / Average Latency / Queue Length / GPU Utilization）为固定模拟值。
 
 ## 4. 系统架构
 
@@ -182,6 +184,8 @@ python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 - 首页：<http://127.0.0.1:8000/>
 - 状态 API：<http://127.0.0.1:8000/api/v1/status>
 - API 文档：<http://127.0.0.1:8000/docs>
+
+> 以上为**本机地址**（`127.0.0.1` 是本机回环地址），需要先在本地启动服务才能访问，在别人的机器或线上直接点击无法打开，属正常现象。
 
 如果使用虚拟环境，请确保启动命令调用的是该环境中的 Python。
 
