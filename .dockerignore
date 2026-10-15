@@ -1,0 +1,37 @@
+# .dockerignore —— 构建镜像时排除无关内容，减小镜像体积、加快构建
+#
+# 注意：不要把 frontend/ 排除掉，Dashboard 是静态资源，必须打进镜像。
+
+# 版本控制与元数据
+.git
+.gitignore
+.github
+
+# Python 虚拟环境
+.venv/
+venv/
+env/
+
+# Python 缓存
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# 测试（运行时不需要）
+tests/
+requirements-dev.txt
+
+# 文档与截图（运行时不加载，但保留在仓库里）
+docs/
+README.md
+
+# 本地环境变量（可能含真实密钥，绝不能进镜像）
+.env
+.env.*
+
+# 编辑器
+.idea/
+.vscode/
+*.swp
+.DS_Store

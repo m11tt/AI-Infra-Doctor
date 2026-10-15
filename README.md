@@ -6,6 +6,19 @@ AI Infra Doctor 是一个面向 AI 基础设施运维场景的开源原型项目
 
 项目采用模块化设计，当前重点实现系统资源监控、规则检测、多指标关联分析、规则诊断与可视化 Dashboard，为后续接入真实 AI 推理工作负载、GPU 监控及大模型辅助诊断提供基础。
 
+## 快速开始（Docker，约 1 分钟）
+
+只要本机装好 [Docker](https://www.docker.com/products/docker-desktop/)，在项目根目录执行一条命令即可启动完整服务：
+
+```bash
+docker compose up --build
+```
+
+启动完成后，浏览器打开 <http://127.0.0.1:8000/dashboard> 即可看到监控页面。
+
+> 无需配置 API Key。不配置时规则链路（监控 / 检测 / 关联 / 诊断）完整可用，只有 LLM 辅助诊断会以降级方式运行。
+> 不使用 Docker 也可以本地运行，详见「6. 运行方式」。
+
 ## 1. 项目背景
 
 随着 AI 模型训练与推理任务不断增加，CPU、内存、磁盘、网络以及 GPU 等资源的使用情况会影响任务运行效率。当服务出现延迟升高、任务排队或资源利用率异常时，仅观察单一指标往往难以判断问题原因。
@@ -136,24 +149,66 @@ AI Infra Doctor 是一个面向 AI 基础设施运维场景的开源原型项目
 | Dashboard | 已实现 Web 展示与定时刷新 |
 | LLM 诊断客户端 | 已有独立模块；尚未接入 Dashboard 和统一状态 API，端到端真实模型调用尚未验证 |
 | 真实 GPU / 推理服务集成 | 当前版本尚未完成 |
+| Docker 一键运行 | 已提供 `Dockerfile` 与 `docker compose` 配置，一条命令即可启动完整服务 |
 
 项目中的模拟工作负载指标用于验证数据展示与关联分析流程，不代表真实推理服务的运行数据。
 
 ## 6. 运行方式
 
-### 6.1 环境要求
+项目提供**两种**运行方式，任选其一：
+
+- **方式一：Docker 运行（推荐）** —— 只需装好 Docker，一条命令即可启动完整服务，不用手动配置 Python 环境，跨平台通用。
+- **方式二：本地 Python 运行** —— 需要自行安装 Python 3.13 并创建虚拟环境。
+
+### 6.1 方式一：Docker 运行（推荐）
+
+前置要求：安装 [Docker Desktop](https://www.docker.com/products/docker-desktop/)（Windows / macOS）或 Docker Engine（Linux），并确保 Docker 已启动。
+
+在项目根目录执行：
+
+```bash
+docker compose up --build
+```
+
+首次运行会自动构建镜像并下载依赖，完成后看到类似 `Uvicorn running on http://0.0.0.0:8000` 的日志即启动成功。然后在浏览器打开：
+
+- Dashboard：<http://127.0.0.1:8000/dashboard>
+- 首页：<http://127.0.0.1:8000/>
+- 状态 API：<http://127.0.0.1:8000/api/v1/status>
+- API 文档：<http://127.0.0.1:8000/docs>
+
+常用命令：
+
+```bash
+docker compose up -d      # 后台运行
+docker compose logs -f    # 查看实时日志
+docker compose down       # 停止并移除容器
+```
+
+如果不想用 compose，也可以用原生 Docker 命令：
+
+```bash
+docker build -t ai-infra-doctor .
+docker run --rm -p 8000:8000 ai-infra-doctor
+```
+
+> **关于 LLM 配置**：Docker 运行**不需要**配置任何 API Key 也能完整演示。不配置时，规则链路（监控 / 检测 / 关联 / 诊断）全部正常工作，只有 LLM 辅助诊断会返回降级结果（`fallback: true`）。若需真实调用大模型，在项目根目录创建 `.env` 文件并填入 `AI_API_KEY`、`AI_BASE_URL`、`AI_MODEL` 三项，再执行 `docker compose up`（Compose 会自动读取）。
+
+### 6.2 方式二：本地 Python 运行
+
+#### 环境要求
 
 - Python 3.13（当前项目使用的 Python 环境）
 - pip
 
-### 6.2 克隆项目
+#### 克隆项目
 
 ```bash
 git clone https://github.com/m11tt/AI-Infra-Doctor.git
 cd AI-Infra-Doctor
 ```
 
-### 6.3 创建虚拟环境
+#### 创建虚拟环境
 
 Windows PowerShell：
 
@@ -164,13 +219,13 @@ python -m venv .venv
 
 如果 PowerShell 无法激活虚拟环境，也可以直接使用虚拟环境中的 Python 执行后续命令。
 
-### 6.4 安装依赖
+#### 安装依赖
 
 ```powershell
 python -m pip install -r requirements.txt
 ```
 
-### 6.5 启动服务
+#### 启动服务
 
 在项目根目录执行：
 
@@ -185,7 +240,7 @@ python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 - 状态 API：<http://127.0.0.1:8000/api/v1/status>
 - API 文档：<http://127.0.0.1:8000/docs>
 
-> 以上为**本机地址**（`127.0.0.1` 是本机回环地址），需要先在本地启动服务才能访问，在别人的机器或线上直接点击无法打开，属正常现象。
+> 以上为**本机地址**（`127.0.0.1` 是本机回环地址），需先在本地启动服务才能访问。因此在 GitHub 页面上直接点击这些链接是打不开的——这是正常现象，请按上面的步骤在本机启动后再访问。
 
 如果使用虚拟环境，请确保启动命令调用的是该环境中的 Python。
 

@@ -1,0 +1,33 @@
+# AI Infra Doctor —— docker compose 配置
+#
+# 使用：
+#   docker compose up --build      # 构建并启动（前台）
+#   docker compose up -d           # 后台启动
+#   docker compose logs -f         # 查看日志
+#   docker compose down            # 停止并移除容器
+#
+# 启动后浏览器打开 http://127.0.0.1:8000/dashboard
+#
+# LLM 可选配置：环境变量在宿主机 shell 中设置即可，例如：
+#   Linux / macOS:  export AI_API_KEY=sk-xxx
+#   Windows PowerShell:  $env:AI_API_KEY="sk-xxx"
+# 或者在同目录建一个 .env 文件（Compose 会自动读取，且已被 .gitignore 忽略）。
+# 三者都不配置也能正常运行——规则链路（监控/检测/关联/诊断）完整可用，
+# 只是 LLM 辅助诊断会返回降级结果（fallback: true）。
+
+services:
+  ai-infra-doctor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ai-infra-doctor:latest
+    container_name: ai-infra-doctor
+    ports:
+      - "8000:8000"
+    environment:
+      # 以下三项从宿主环境或 .env 读取；未提供时为空字符串，程序自动降级
+      AI_API_KEY: "${AI_API_KEY:-}"
+      AI_BASE_URL: "${AI_BASE_URL:-}"
+      AI_MODEL: "${AI_MODEL:-}"
+      PYTHONUNBUFFERED: "1"
+    restart: unless-stopped
