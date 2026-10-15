@@ -62,11 +62,7 @@ AI Infra Doctor 是一个面向 AI 基础设施运维场景的开源原型项目
 
 ## 3. 项目截图
 
-运行 Dashboard 后，可在此展示实际运行截图。
-
-将截图保存到仓库的 `docs/dashboard.png`，然后取消下面这行的注释：
-
-<!-- ![AI Infra Doctor Dashboard](docs/dashboard.png) -->
+!-- ![AI Infra Doctor Dashboard](docs/dashboard.png) --
 
 截图应反映当前真实运行效果。工作负载中的模拟指标应与真实主机采集指标明确区分。
 
