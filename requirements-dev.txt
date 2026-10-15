@@ -1,0 +1,11 @@
+# 开发 / 测试依赖
+#
+# 仅用于本地开发与运行测试，不属于运行时依赖，不需要部署到生产环境。
+# 安装方式：
+#     pip install -r requirements-dev.txt
+#
+# 先引入运行时依赖，测试用例需要 import 应用模块（fastapi / psutil / httpx 等）。
+-r requirements.txt
+
+# 测试框架
+pytest>=8.0.0

@@ -1,0 +1,52 @@
+# Python 字节码与优化文件
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# 打包与分发
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# 虚拟环境
+.venv/
+venv/
+env/
+ENV/
+
+# 测试与覆盖率
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# 类型检查与 lint 缓存
+.mypy_cache/
+.ruff_cache/
+
+# 环境变量（只提交 .env.example）
+.env
+.env.*
+!.env.example
+
+# 本地数据（SQLite 等）
+data/
+*.db
+*.sqlite
+*.sqlite3
+
+# 编辑器与操作系统
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# 参赛材料（单独提交到比赛平台，不进代码仓库）
+作品介绍_AI-Infra-Doctor.pdf
+测试报告_AI-Infra-Doctor.md
+

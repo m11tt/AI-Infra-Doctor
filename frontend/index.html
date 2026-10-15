@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Infra Doctor Dashboard</title>
+    <!--
+      注意：这里必须用绝对路径 /dashboard/xxx，不能写相对的 "style.css"。
+      页面地址是 /dashboard（没有尾斜杠），相对路径会被解析成 /style.css 而 404。
+    -->
+    <link rel="stylesheet" href="/dashboard/style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <h1>AI Infra Doctor</h1>
+        <p class="subtitle">AI Workload Monitoring &amp; Diagnosis</p>
+      </div>
+      <div id="health" class="health">正在加载状态数据…</div>
+    </header>
+
+    <main class="container">
+      <!-- 系统资源 -->
+      <section class="block">
+        <h2>系统资源 <span class="en">System Resources</span></h2>
+        <div class="cards" id="metrics-cards"></div>
+      </section>
+
+      <!-- AI 工作负载 -->
+      <section class="block">
+        <h2>AI 工作负载 <span class="en">AI Workload</span></h2>
+        <div class="cards" id="workload-cards"></div>
+      </section>
+
+      <!-- 图表 -->
+      <section class="block">
+        <h2>监控图表 <span class="en">Charts</span></h2>
+        <div class="charts">
+          <div class="chart-card">
+            <div id="cpu-chart" class="chart"></div>
+          </div>
+          <div class="chart-card">
+            <div id="gpu-chart" class="chart"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 资源异常 -->
+      <section class="block">
+        <h2>资源异常 <span class="en">Anomalies</span></h2>
+        <div id="anomalies-list" class="list"></div>
+      </section>
+
+      <!-- 多指标关联发现 -->
+      <section class="block">
+        <h2>多指标关联发现 <span class="en">Correlation Findings</span></h2>
+        <div id="findings-list" class="list"></div>
+      </section>
+
+      <!-- 诊断 -->
+      <section class="block">
+        <h2>诊断 <span class="en">Diagnosis</span></h2>
+        <div id="diagnoses-list" class="list"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      数据来源：GET /api/v1/status &nbsp;|&nbsp; 本页不做任何判断逻辑，仅负责展示
+    </footer>
+
+    <!--
+      只同步加载自己的脚本。ECharts 改由 app.js 从本地 vendor 目录动态加载，
+      这样即使脚本文件缺失或损坏，页面数据也能立刻显示，图表随后再补上。
+    -->
+    <script src="/dashboard/app.js"></script>
+  </body>
+</html>
